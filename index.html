@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thera Vida | احجز تقييمك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#103c4a; --teal:#087f83; --teal-2:#0fa3a5; --pale:#eaf5f4;
+  --bg:#f3f8f8; --line:#d9e7e8; --text:#183640; --muted:#6a8089; --warn:#d8a545;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.7 'Cairo',Tahoma,sans-serif;min-height:100vh}
+
+/* Header */
+header{background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;padding:34px 20px 70px;text-align:center;position:relative;overflow:hidden}
+header::before,header::after{content:"";position:absolute;border-radius:50%;background:#ffffff12;animation:float 9s ease-in-out infinite}
+header::before{width:220px;height:220px;top:-80px;left:-60px}
+header::after{width:160px;height:160px;bottom:-70px;right:-40px;animation-delay:-4s}
+@keyframes float{50%{transform:translateY(18px)}}
+.brand{font-size:28px;font-weight:800;letter-spacing:4px;direction:ltr}
+header h1{font-size:20px;font-weight:700;margin-top:4px}
+header p{color:#d5f0ef;font-size:14px}
+
+/* Card */
+.card{max-width:640px;margin:-46px auto 30px;background:#fff;border-radius:20px;box-shadow:0 18px 50px #103c4a1a;padding:26px 26px 22px;position:relative;animation:rise .6s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+
+/* Progress */
+.progress{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.bar{flex:1;height:6px;background:var(--pale);border-radius:9px;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-2));border-radius:9px;transition:width .5s ease}
+.count{font-size:13px;color:var(--muted);font-weight:600;white-space:nowrap}
+.step-title{font-size:19px;font-weight:800;color:var(--navy);margin:14px 0 2px}
+.step-sub{font-size:13px;color:var(--muted);margin-bottom:14px}
+
+/* Steps */
+.step{display:none}
+.step.active{display:block;animation:slide .45s ease both}
+@keyframes slide{from{opacity:0;transform:translateX(-26px)}}
+.q{padding:12px 0;border-bottom:1px dashed var(--line)}
+.q:last-child{border-bottom:0}
+.q>label,.q .lbl{display:block;font-weight:700;margin-bottom:8px;font-size:15px}
+.hint{font-weight:400;font-size:12.5px;color:var(--muted)}
+.req{color:var(--teal)}
+input[type=text],input[type=number],input[type=date],input[type=tel],textarea,select{
+  font:inherit;width:100%;border:1.5px solid var(--line);border-radius:12px;padding:10px 13px;background:#fbfdfd;color:var(--text);transition:border-color .2s,box-shadow .2s}
+input:focus,textarea:focus,select:focus{outline:0;border-color:var(--teal);box-shadow:0 0 0 4px #087f8320;background:#fff}
+textarea{min-height:76px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+
+/* Chips */
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-block;padding:7px 14px;border:1.5px solid var(--line);border-radius:999px;font-size:14px;cursor:pointer;transition:all .2s;background:#fff;user-select:none}
+.chip span:hover{border-color:var(--teal)}
+.chip input:checked+span{background:var(--teal);border-color:var(--teal);color:#fff;transform:scale(1.04)}
+.chip input:focus-visible+span{box-shadow:0 0 0 4px #087f8330}
+
+/* Pain scale */
+.scale{display:grid;grid-template-columns:repeat(11,1fr);gap:5px}
+.scale .chip span{width:100%;text-align:center;padding:7px 0;border-radius:10px}
+
+/* Notices */
+.notice{background:#fff8e8;border-right:4px solid var(--warn);padding:10px 14px;border-radius:10px;font-size:13.5px;margin-bottom:6px}
+.alert{display:none;background:#fdecec;border-right:4px solid #c94a4a;padding:10px 14px;border-radius:10px;font-size:13.5px;margin-top:10px;animation:slide .3s ease}
+.consent{display:flex;gap:10px;align-items:flex-start;background:var(--pale);padding:14px;border-radius:12px;cursor:pointer;font-size:14.5px}
+.consent input{accent-color:var(--teal);width:20px;height:20px;margin-top:4px;flex-shrink:0}
+.err{color:#c94a4a;font-size:13px;min-height:20px;margin-top:8px}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(6px)}75%{transform:translateX(-6px)}}
+
+/* Buttons */
+.nav{display:flex;gap:10px;margin-top:8px}
+.btn{flex:1;border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .2s,opacity .2s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(135deg,var(--teal),var(--teal-2));color:#fff;box-shadow:0 8px 20px #087f8340}
+.btn.primary:hover{box-shadow:0 10px 26px #087f8355}
+.btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--line);flex:0 0 auto}
+.btn.wa{background:#25d366;color:#fff;box-shadow:0 8px 20px #25d36640}
+.btn[hidden]{display:none}
+
+/* Success */
+.done{display:none;text-align:center;padding:16px 0 6px}
+.done.show{display:block;animation:rise .5s ease both}
+.check{width:84px;height:84px;margin:0 auto 12px}
+.check circle{stroke:var(--teal);stroke-width:4;fill:none;stroke-dasharray:252;stroke-dashoffset:252;animation:draw .7s ease forwards}
+.check path{stroke:var(--teal);stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;animation:draw .4s .6s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.done h2{color:var(--navy);font-size:21px}
+.done p{color:var(--muted);font-size:14.5px;margin:4px 0 16px}
+
+footer{text-align:center;color:var(--muted);font-size:12.5px;padding:0 16px 26px}
+
+@media(max-width:560px){
+  .card{margin:-46px 12px 24px;padding:20px 16px}
+  .grid{grid-template-columns:1fr}
+  .scale{grid-template-columns:repeat(6,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">THERA VIDA</div>
+  <h1>احجز تقييم العلاج الطبيعي</h1>
+  <p>جاوب على كام سؤال بسيط · حوالي 5 دقايق</p>
+</header>
+
+<div class="card">
+  <div class="progress" id="progress">
+    <div class="bar"><span id="barFill"></span></div>
+    <div class="count" id="count">1 / 6</div>
+  </div>
+
+  <form id="intake" novalidate>
+
+    <!-- 1 -->
+    <div class="step active" data-title="بياناتك الأساسية" data-sub="عشان نقدر نتواصل معاك ونحدد ميعادك">
+      <div class="grid">
+        <div class="q"><label for="name">الاسم بالكامل <span class="req">*</span></label><input id="name" name="الاسم" type="text" required></div>
+        <div class="q"><label for="age">السن <span class="req">*</span></label><input id="age" name="السن" type="number" min="1" max="120" required></div>
+        <div class="q"><label for="phone">رقم التواصل <span class="req">*</span></label><input id="phone" name="رقم التواصل" type="tel" required></div>
+        <div class="q"><label for="job">الوظيفة / النشاط اليومي</label><input id="job" name="الوظيفة" type="text"></div>
+        <div class="q"><label for="date">الميعاد المفضل</label><input id="date" name="الميعاد المفضل" type="date"></div>
+        <div class="q"><label for="visit">نوع التقييم</label>
+          <select id="visit" name="نوع التقييم"><option value="">اختر</option><option>أونلاين</option><option>حضوري</option><option>لسه مش محدد</option></select></div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="step" data-title="المشكلة الأساسية" data-sub="احكيلنا إيه اللي مضايقك">
+      <div class="q"><label for="problem">إيه أكتر مشكلة مضايقاك حاليًا؟ <span class="req">*</span></label>
+        <textarea id="problem" name="الشكوى الأساسية" required placeholder="مثال: وجع أسفل الظهر عند القعدة"></textarea></div>
+      <div class="q"><span class="lbl">المشكلة فين؟ <span class="hint">ممكن أكتر من مكان</span></span>
+        <div class="choices" data-name="مكان المشكلة" data-multi data-options="الرقبة,الكتف,الذراع أو اليد,أعلى الظهر,أسفل الظهر,الحوض,الركبة,الكاحل أو القدم,مكان آخر"></div></div>
+      <div class="q"><span class="lbl">بدأت من إمتى؟</span>
+        <div class="choices" data-name="مدة المشكلة" data-options="أقل من أسبوع,1–6 أسابيع,6–12 أسبوع,أكتر من 3 شهور,مش متأكد"></div></div>
+      <div class="q"><span class="lbl">بدأت إزاي؟</span>
+        <div class="choices" data-name="بداية المشكلة" data-options="فجأة,بالتدريج,بعد إصابة أو وقعة,بعد عملية,مش عارف"></div></div>
+      <div class="q"><span class="lbl">الأعراض عاملة إيه مؤخرًا؟</span>
+        <div class="choices" data-name="تطور الأعراض" data-options="بتتحسن,بتسوء,ثابتة,بتزيد وتقل"></div></div>
+    </div>
+
+    <!-- 3 -->
+    <div class="step" data-title="الألم والأعراض" data-sub="كل ما تكون دقيق أكتر، كل ما التقييم يكون أسرع">
+      <div class="q"><span class="lbl">درجة الألم حاليًا <span class="hint">0 = مفيش ألم · 10 = أقصى ألم</span></span>
+        <div class="scale" data-name="شدة الألم" data-options="0,1,2,3,4,5,6,7,8,9,10"></div></div>
+      <div class="q"><span class="lbl">طبيعة الألم أو الإحساس <span class="hint">ممكن أكتر من إجابة</span></span>
+        <div class="choices" data-name="طبيعة الألم" data-multi data-options="وجع أو شد,نغز أو ألم حاد,حرقان,تنميل أو شكشكة,كهربا,تيبس,مفيش ألم,غير كده"></div></div>
+      <div class="q"><span class="lbl">إيه اللي بيزود الأعراض؟</span>
+        <div class="choices" data-name="عوامل زيادة الألم" data-multi data-options="القعدة,الوقوف,المشي,الانحناء,رفع حاجات,التمرين,النوم,حركة معينة,مش عارف"></div></div>
+      <div class="q"><span class="lbl">إيه اللي بيخففها؟</span>
+        <div class="choices" data-name="عوامل تخفيف الألم" data-multi data-options="الراحة,تغيير الوضع,الحركة الخفيفة,الكمادات,الأدوية,مفيش حاجة واضحة"></div></div>
+      <div class="q"><span class="lbl">الألم مأثر على النوم؟</span>
+        <div class="choices" data-name="تأثير النوم" data-options="لا,أحيانًا,أيوه بشكل واضح"></div></div>
+      <div class="q"><span class="lbl">فيه تنميل أو ضعف جديد في الذراع أو الرجل؟</span>
+        <div class="choices" data-name="تنميل أو ضعف" data-options="لا,تنميل,ضعف,الاتنين,مش متأكد"></div></div>
+    </div>
+
+    <!-- 4 -->
+    <div class="step" data-title="التاريخ الطبي والسلامة" data-sub="معلومات مهمة لسلامتك">
+      <div class="q"><span class="lbl">عندك أي من الحالات دي؟</span>
+        <div class="choices" data-name="التاريخ المرضي" data-multi data-options="سكر,ضغط,أمراض قلب,هشاشة عظام,أمراض روماتيزمية,أمراض عصبية,تاريخ أورام,مفيش مما سبق"></div></div>
+      <div class="q"><span class="lbl">عملت عملية أو حصلت إصابة مهمة قبل كده؟</span>
+        <div class="choices" data-name="عمليات أو إصابات سابقة" data-options="لا,أيوه"></div>
+        <textarea name="تفاصيل العمليات أو الإصابات" placeholder="لو أيوه، اكتب التفاصيل والتاريخ التقريبي" style="margin-top:8px"></textarea></div>
+      <div class="q"><span class="lbl">بتاخد أدوية حاليًا؟</span>
+        <div class="choices" data-name="أدوية حالية" data-options="لا,أيوه"></div>
+        <textarea name="تفاصيل الأدوية" placeholder="لو أيوه، اكتب أسماء الأدوية إن أمكن" style="margin-top:8px"></textarea></div>
+      <div class="q"><span class="lbl">حصل أي من الآتي مؤخرًا؟ <span class="hint">بعض الأعراض قد تستدعي رعاية عاجلة</span></span>
+        <div class="choices" id="redflags" data-name="أعراض إنذارية" data-multi data-options="سخونية أو عدوى غير مفسرة,فقدان وزن غير مفسر,إصابة أو وقعة قوية,ضعف بيزيد بسرعة,تغير جديد في التحكم في البول أو البراز,تنميل جديد بين الرجلين أو حول المنطقة الحساسة,مفيش مما سبق"></div>
+        <div class="alert" id="rfAlert">⚠️ الأعراض اللي اخترتها ممكن تحتاج كشف طبي عاجل. من فضلك ما تستناش ميعاد التقييم وتوجه لأقرب طوارئ أو كلم دكتورك.</div></div>
+      <div class="q"><span class="lbl">عندك أشعة أو تقارير طبية؟</span>
+        <div class="choices" data-name="فحوصات سابقة" data-options="لا,أيوه,هجيبها وقت التقييم"></div></div>
+    </div>
+
+    <!-- 5 -->
+    <div class="step" data-title="تأثير المشكلة وأهدافك" data-sub="عشان نبني خطة على مقاسك">
+      <div class="q"><span class="lbl">إيه الأنشطة اللي المشكلة مأثرة عليها؟</span>
+        <div class="choices" data-name="الأنشطة المتأثرة" data-multi data-options="الشغل,المشي,القعدة,النوم,طلوع السلم,شغل البيت,التمرين أو الرياضة,اللبس أو الاستحمام,مش مأثرة بشكل واضح"></div></div>
+      <div class="q"><label for="goal">إيه أهم حاجة نفسك ترجع تعملها بسهولة؟ <span class="req">*</span></label>
+        <textarea id="goal" name="هدف المريض" required placeholder="مثال: أرجع أجري أو أقعد في الشغل من غير ألم"></textarea></div>
+      <div class="q"><span class="lbl">جربت علاج طبيعي للمشكلة دي قبل كده؟</span>
+        <div class="choices" data-name="علاج طبيعي سابق" data-options="لا,أيوه وتحسنت,أيوه من غير تحسن واضح"></div></div>
+      <div class="q"><label for="notes">أي حاجة تانية تحب الدكتور يعرفها؟</label>
+        <textarea id="notes" name="ملاحظات إضافية" placeholder="اختياري"></textarea></div>
+    </div>
+
+    <!-- 6 -->
+    <div class="step" data-title="تأكيد الحجز" data-sub="آخر خطوة">
+      <div class="notice">الاستمارة دي بتساعد الأخصائي يفهم حالتك، لكنها مش تشخيص ولا تُغني عن التقييم الطبي. <b>لو عندك أعراض طارئة توجه للطوارئ فورًا.</b></div>
+      <div class="q">
+        <label class="consent"><input type="checkbox" id="consent" required>
+          <span>أوافق على مشاركة إجاباتي مع فريق Thera Vida المختص لغرض التحضير للتقييم، وأفهم إن الاستمارة دي مش تشخيص طبي. <span class="req">*</span></span></label>
+      </div>
+      <p class="hint">بعد الضغط على «تأكيد الحجز» هيفتح واتساب Thera Vida والإجابات مكتوبة جاهزة، كل اللي عليك تضغط إرسال. البيانات مش بتتبعت لأي سيرفر.</p>
+    </div>
+
+    <div class="err" id="err" role="alert"></div>
+
+    <div class="nav" id="nav">
+      <button type="button" class="btn ghost" id="back" hidden>→ رجوع</button>
+      <button type="button" class="btn primary" id="next">التالي ←</button>
+    </div>
+  </form>
+
+  <div class="done" id="done">
+    <svg class="check" viewBox="0 0 90 90"><circle cx="45" cy="45" r="40"/><path d="M27 46 l12 12 l24 -26"/></svg>
+    <h2>تمام! بياناتك جاهزة</h2>
+    <p>هنفتحلك واتساب Thera Vida دلوقتي… اضغط إرسال عشان نأكد ميعادك.</p>
+    <a class="btn wa" id="waLink" href="#" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;max-width:320px;width:100%">افتح واتساب وأرسل</a>
+  </div>
+</div>
+
+<footer>THERA VIDA · Physical Therapy · بياناتك الطبية سرية</footer>
+
+<script>
+const WA_NUMBER = '201551061989';
+
+// Build chips
+document.querySelectorAll('[data-options]').forEach((box, i) => {
+  const multi = box.hasAttribute('data-multi');
+  box.dataset.options.split(',').forEach((v, j) => {
+    const l = document.createElement('label'); l.className = 'chip';
+    const inp = document.createElement('input');
+    inp.type = multi ? 'checkbox' : 'radio'; inp.name = box.dataset.name; inp.value = v; inp.id = `o${i}_${j}`;
+    const s = document.createElement('span'); s.textContent = v;
+    l.append(inp, s); box.append(l);
+  });
+});
+
+// "مفيش مما سبق" clears others (and vice versa)
+document.querySelectorAll('[data-multi]').forEach(box => {
+  box.addEventListener('change', e => {
+    const none = /^(مفيش|مش مأثرة)/;
+    const boxes = [...box.querySelectorAll('input')];
+    if (none.test(e.target.value) && e.target.checked) boxes.forEach(b => { if (b !== e.target) b.checked = false; });
+    else if (e.target.checked) boxes.forEach(b => { if (none.test(b.value)) b.checked = false; });
+    if (box.id === 'redflags') {
+      const hit = boxes.some(b => b.checked && !none.test(b.value));
+      document.getElementById('rfAlert').style.display = hit ? 'block' : 'none';
+    }
+  });
+});
+
+// Steps
+const steps = [...document.querySelectorAll('.step')];
+const card = document.querySelector('.card');
+let cur = 0;
+const titleEl = document.createElement('div'); titleEl.className = 'step-title';
+const subEl = document.createElement('div'); subEl.className = 'step-sub';
+document.getElementById('progress').after(titleEl, subEl);
+
+function render() {
+  steps.forEach((s, i) => s.classList.toggle('active', i === cur));
+  titleEl.textContent = steps[cur].dataset.title;
+  subEl.textContent = steps[cur].dataset.sub;
+  document.getElementById('barFill').style.width = ((cur + 1) / steps.length * 100) + '%';
+  document.getElementById('count').textContent = `${cur + 1} / ${steps.length}`;
+  document.getElementById('back').hidden = cur === 0;
+  document.getElementById('next').textContent = cur === steps.length - 1 ? 'تأكيد الحجز عبر واتساب ✓' : 'التالي ←';
+  document.getElementById('err').textContent = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validStep() {
+  const req = [...steps[cur].querySelectorAll('[required]')];
+  const bad = req.find(el => el.type === 'checkbox' ? !el.checked : !el.value.trim());
+  if (bad) {
+    const err = document.getElementById('err');
+    err.textContent = bad.type === 'checkbox' ? 'لازم توافق على الشروط عشان تكمل.' : 'من فضلك كمّل الخانات المطلوبة (*)';
+    card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+    if (bad.type !== 'checkbox') bad.focus();
+    return false;
+  }
+  return true;
+}
+
+document.getElementById('next').onclick = () => {
+  if (!validStep()) return;
+  if (cur < steps.length - 1) { cur++; render(); } else submit();
+};
+document.getElementById('back').onclick = () => { if (cur > 0) { cur--; render(); } };
+
+function buildMessage() {
+  const fd = new FormData(document.getElementById('intake'));
+  const vals = {};
+  for (const [k, v] of fd.entries()) { if (!String(v).trim()) continue; (vals[k] ??= []).push(v); }
+  return '*THERA VIDA — طلب حجز تقييم*\n'
+    + Object.entries(vals).map(([k, v]) => `▪️ *${k}:* ${v.join('، ')}`).join('\n')
+    + '\n\n_معلومات طبية خاصة — للمختص فقط._';
+}
+
+function submit() {
+  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(buildMessage())}`;
+  document.getElementById('waLink').href = url;
+  document.getElementById('intake').style.display = 'none';
+  document.getElementById('progress').style.display = 'none';
+  titleEl.style.display = subEl.style.display = 'none';
+  document.getElementById('done').classList.add('show');
+  setTimeout(() => { window.location.href = url; }, 1800);
+}
+
+render();
+</script>
+</body>
+</html>
